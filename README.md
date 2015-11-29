@@ -1,0 +1,2 @@
+# MyProjekt
+Programmeerimise kursuse projekt
