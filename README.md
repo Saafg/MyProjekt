@@ -1,2 +1,3 @@
 # MyProjekt
-Programmeerimise kursuse projekt
+
+MyProjekt on "repository" minu programmeerimise kursuse projekti jaoks.
