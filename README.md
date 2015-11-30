@@ -8,7 +8,7 @@ info ning sooritama saadud info analüüsi. Samuti kirjutama saadud info tekstif
 kasutada "kv.ee" otsingutulemuste lehte, kust võtta välja pakutavaid kortereid puudutava info. 
 
 Projekti töö käigu kirjeldus:
-Html koodiga tegelemiseks oli mul tarvis kahte Pythoni moodulit, mida ei leidu Pythoni standard librarys: "requests" ning "BeautifulSoup".
+Html koodiga tegelemiseks oli mul tarvis kahte Pythoni moodulit, mida ei leidu Pythoni standard librarys: "requests" ning "BeautifulSoup4".
 Uue mooduli downloadimiseks leidsin mitmeid variante: 
 1)downloadida kodulehelt mooduli package, see unpack-da, minna terminalis vastavasse kausta ning kirjutada python
 setup.py install; 
@@ -34,3 +34,4 @@ Leidnud meetodi kv.ee lehelt mind huvitava info kätte saamiseks väljastasin se
 3) Pakutava korteri pindala ruutmeetrites
 4) Pakutava korteri ruutmeetrihind
 5) Pakutava korteri hind
+

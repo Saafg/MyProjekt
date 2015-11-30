@@ -12,12 +12,17 @@ data = soup.find_all("tr", attrs={"class":"object-type-apartment", "id":True})
 
 f=(open("kinnisvara.txt", "w"))
 
+toad = []
+ruutmeetreid = []
+
 for item in data:
         print(item.contents[3].find_all("h2")[0].text.strip())
         f.write(item.contents[3].find_all("h2")[0].text.strip() + "\n")
         print("Tube: " + item.contents[5].text)
+        toad.append(item.contents[5].text)
         f.write("Tube: " + item.contents[5].text + "\n")
         print("Ruutmeetreid: " + item.contents[7].text.strip())
+        ruutmeetreid.append(int(item.contents[7].text.strip()))
         f.write("Tube: " + item.contents[7].text.strip() + "\n")
         print("Ruutmeetrihind: " + str(item.contents[11].find("span", attrs={"class":"object-m2-price"}).text.strip()))
         f.write("Ruutmeetrihind: " + str(item.contents[11].find("span", attrs={"class":"object-m2-price"}).text.strip()) + "\n")
@@ -26,3 +31,6 @@ for item in data:
         print()
 
 f.close()
+
+
+
