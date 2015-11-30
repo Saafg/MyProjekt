@@ -29,9 +29,10 @@ mõte võtta koodist ühe protsessina välja ridu, mis omavad ühte või teist a
 väärtust). Antud probleemi ma lahendatud ei saanudki.   
 
 Leidnud meetodi kv.ee lehelt mind huvitava info kätte saamiseks väljastasin selle ekraanile ning kirjutasin faili kujul:
-1) Pakutava korteri aadress
-2) Pakutava korteri tubade arv
-3) Pakutava korteri pindala ruutmeetrites
-4) Pakutava korteri ruutmeetrihind
-5) Pakutava korteri hind
+1) Pakutava kinnisvara aadress
+2) Pakutava kinnisvara tubade arv
+3) Pakutava kinnisvara pindala ruutmeetrites
+4) Pakutava kinnisvara ruutmeetrihind
+5) Pakutava kinnisvara hind
 
+Järgnes kõikide korterite näitajate põhjal listide moodustamine ning kasutades saadud liste arvutasin arvulistele näitajatele keskmised. 
