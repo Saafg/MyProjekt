@@ -35,9 +35,10 @@ Leidnud meetodi kv.ee lehelt mind huvitava info kätte saamiseks väljastasin se
 4) Pakutava kinnisvara ruutmeetrihind
 5) Pakutava kinnisvara hind
 
-Järgnes kõikide korterite näitajate põhjal listide moodustamine ning kasutades saadud liste arvutasin arvulistele näitajatele keskmised. 
+Järgnes kõikide korterite näitajate põhjal listide moodustamine ning kasutades saadud liste arvutasin arvulistele näitajatele keskmised ning väljastasin need ekraanile. 
 
-Järgnevalt mõtlesin igale arvulisele näitajale (tubade arv, pindala, ruutmeetrihind, hind) välja mingid vahemikud ning lugesin kokku palju kortereid jääb loodud vahemikesse.
+Järgnevalt mõtlesin igale arvulisele näitajale (tubade arv, pindala, ruutmeetrihind, hind) välja mingid vahemikud ning lugesin kokku palju kortereid jääb loodud vahemikesse. Tulemused
+väljastasin ekraanile.
 
-Kasutades tkinterit lõin akna, mis avaneb ning kuhu saab sisestada ühe korteritega seotud arvulise näitaja, vastusena tekib sektordiagramm mis kajastab minu loodud vahemikke
-sellele näitajale ning korterite arvu, mis nendesse vahemikesse jääb.
+Kasutades tkinterit lõin akna, mis avaneb programmi käivitamisel ning kuhu saab sisestada ühe korteritega seotud arvulise näitaja, vastusena tekib sektordiagramm mis kajastab korterite
+jaotumist selle näitaja jaoks mõeldud vahemikesse.
