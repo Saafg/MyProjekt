@@ -4,7 +4,7 @@ MyProjekt on "repository" minu programmeerimise kursuse projekti jaoks.
 
 Projekti eesmärk:
 Programmeerimise kursuse projektina kirjutatav pythoni programm peaks suutma välja võtta valitud veebilehe html koodist mind huvitava
-info ning sooritama saadud info analüüsi. Samuti kirjutama saadud info tekstifaili ning väljastama ekraanile. Täpsemalt on plaan veebilehena 
+info, sooritama saadud info analüüsi ning väljastama need ekraanile. Täpsemalt on plaan veebilehena 
 kasutada "kv.ee" otsingutulemuste lehte, kust võtta välja pakutavaid kortereid puudutava info. 
 
 Projekti töö käigu kirjeldus:
@@ -36,3 +36,8 @@ Leidnud meetodi kv.ee lehelt mind huvitava info kätte saamiseks väljastasin se
 5) Pakutava kinnisvara hind
 
 Järgnes kõikide korterite näitajate põhjal listide moodustamine ning kasutades saadud liste arvutasin arvulistele näitajatele keskmised. 
+
+Järgnevalt mõtlesin igale arvulisele näitajale (tubade arv, pindala, ruutmeetrihind, hind) välja mingid vahemikud ning lugesin kokku palju kortereid jääb loodud vahemikesse.
+
+Kasutades tkinterit lõin akna, mis avaneb ning kuhu saab sisestada ühe korteritega seotud arvulise näitaja, vastusena tekib sektordiagramm mis kajastab minu loodud vahemikke
+sellele näitajale ning korterite arvu, mis nendesse vahemikesse jääb.
