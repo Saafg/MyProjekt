@@ -42,3 +42,9 @@ väljastasin ekraanile.
 
 Kasutades tkinterit lõin akna, mis avaneb programmi käivitamisel ning kuhu saab sisestada ühe korteritega seotud arvulise näitaja, vastusena tekib sektordiagramm mis kajastab korterite
 jaotumist selle näitaja jaoks mõeldud vahemikesse.
+
+Kirjutasin programmile juurde koodi, mis võimaldab "input"-i kasutades sisestada otsingukriteeriumeid nagu nt. otsitava kinnisvara  minimaalne ja maksimaalne tubade arv, minimaalne ja
+maksimaalne hind ning tehingu tüüp - kas müük, üür või mõlemad. Kuna kinnisvara müügi ja ostu puhul on kõikumised hinnas ning ruutmeetrihinnas suured, siis tegin nende näitajate puhul
+sektordiagrammi loomisel kasutatavad vahemikud sõltuvaks otsingutulemustes kajastuvate pakkumiste maksimaalsest hinnast ning ruutmeetrihinnast.
+
+Edasi on plaanis võimaldada sisestada otsingukriteeriumiteks ka korteri asukoht - vähemalt maakondade ning suuremate linnade (Tallinn, Tartu, Pärnu) piires.

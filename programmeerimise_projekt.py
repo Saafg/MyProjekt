@@ -3,7 +3,39 @@ __author__ = 'erkiaun'
 import requests
 from bs4 import BeautifulSoup
 
-url = "http://www.kv.ee/?act=search.simple&company_id=&page=1&orderby=ob&page_size=&deal_type=2&dt_select=2&county=1&parish=&price_min=&price_max=&price_type=1&rooms_min=&rooms_max=&area_min=&area_max=&floor_min=&floor_max=&keyword="
+tehing =  input("Sisesta huvipakkuva tehingu tüüp(müük, üür või kõik): ")
+while tehing != "müük" and tehing != "üür" and tehing != "kõik":
+    tehing =  input("Sisesta palun korrektine tehingu tüüp(müük, üür või kõik): ")
+if tehing == "üür":
+    tehing = "2"
+if tehing == "müük":
+    tehing = "1"
+if tehing == "kõik":
+    tehing = "20"
+
+toad_min = input("Sisesta minimaalne tubade arv (kui ei soovi täpsustada, vajuta Enter): ")
+while toad_min != "" and toad_min.isnumeric() == False:
+    toad_min = input("Sisesta palun korrektselt minimaalne tubade arv (kui ei soovi täpsustada, vajuta Enter): ")
+
+toad_max = input("Sisesta maksimaalne tubade arv (kui ei soovi täpsustada, vajuta Enter): ")
+while toad_max != "" and toad_max.isnumeric() == False:
+    toad_max = input("Sisesta palun korrektselt maksimaalne tubade arv (kui ei soovi täpsustada, vajuta Enter): ")
+
+hind_min = input("Sisesta minimaalne hind (kui ei soovi täpsustada, vajuta Enter): ")
+while hind_min != "" and hind_min.isnumeric() == False:
+    hind_min = input("Sisesta palun korrektselt minimaalne hind (kui ei soovi täpsustada, vajuta Enter): ")
+
+hind_max = input("Sisesta maksimaalne hind (kui ei soovi täpsustada, vajuta Enter): ")
+while hind_max != "" and hind_max.isnumeric() == False:
+    hind_max = input("Sisesta palun korrektselt maksimaalne hind (kui ei soovi täpsustada, vajuta Enter): ")
+
+url = "http://www.kv.ee/?act=search.simple&company_id=&page=1&orderby=ob&page_size=100&deal_type=2&dt_select=2&county=1&parish=&price_min=&price_max=&price_type=1&rooms_min=&rooms_max=&area_min=&area_max=&floor_min=&floor_max=&keyword="
+url = url.replace(url[url.find("deal_type"):url.find("deal_type")+23],"deal_type="+tehing+"&dt_select="+tehing)
+url = url.replace("rooms_min=","rooms_min="+toad_min)
+url = url.replace("rooms_max=","rooms_max="+toad_max)
+url = url.replace("price_max=","price_max="+hind_max)
+url = url.replace("price_min=","price_min="+hind_min)
+print(url)
 r = requests.get(url)
 
 soup = BeautifulSoup(r.content, "html.parser")
@@ -23,7 +55,9 @@ for item in data:
         print("Ruutmeetreid: " + item.contents[7].text.strip())
         ruutmeetreid.append(item.contents[7].text.strip()[0:-3])
         print("Ruutmeetrihind: " + str(item.contents[11].find("span", attrs={"class":"object-m2-price"}).text.strip()))
-        ruutmeetrihind.append(item.contents[11].find("span", attrs={"class":"object-m2-price"}).text.strip()[0:-5])
+        y=(item.contents[11].find("span", attrs={"class":"object-m2-price"}).text.strip())
+        y=y.replace(u"\xa0","")
+        ruutmeetrihind.append(y[0:-5])
         print("Hind: " + str(item.contents[11].find("p", attrs={"class":"object-price-value"}).text.strip()))
         x=(item.contents[11].find("p", attrs={"class":"object-price-value"}).text.strip()[0:-2])
         x=x.replace(u"\xa0","")
@@ -69,67 +103,77 @@ for i in ruutmeetreid:
         pindalaga_kvsid += 1
 
 
-alla5 = 0
-alla6 = 0
-alla7 = 0
-alla8 = 0
-alla9 = 0
-alla10 = 0
-alla11 = 0
-alla12 = 0
-yle12 = 0
+ruutmeetrihind_i_vahemik = 0
+ruutmeetrihind_ii_vahemik = 0
+ruutmeetrihind_iii_vahemik = 0
+ruutmeetrihind_iv_vahemik = 0
+ruutmeetrihind_v_vahemik = 0
+ruutmeetrihind_vi_vahemik = 0
+ruutmeetrihind_vii_vahemik = 0
+ruutmeetrihind_viii_vahemik = 0
+ruutmeetrihind_iix_vahemik = 0
+for i in range(len(ruutmeetrihind)):
+    ruutmeetrihind[i] = float(ruutmeetrihind[i])
+print(ruutmeetrihind)
+ruutmeetrihinnamax = max(ruutmeetrihind)
+print(ruutmeetrihinnamax)
 ruutmeetrihind_kokku = 0
 ruutmeetrihinnaga_kvsid = 0
 for i in ruutmeetrihind:
     if i != "0":
         ruutmeetrihind_kokku += float(i)
         ruutmeetrihinnaga_kvsid += 1
-        if float(i) > 0 and float(i)<5:
-            alla5 += 1
-        if float(i) >= 5 and float(i)<6:
-            alla6 += 1
-        if float(i) >= 6 and float(i)<7:
-            alla7 += 1
-        if float(i) >= 7 and float(i)<8:
-            alla8 += 1
-        if float(i) >= 8 and float(i)<9:
-            alla9 += 1
-        if float(i) >= 9 and float(i)<10:
-            alla10 += 1
-        if float(i) >= 10 and float(i)<11:
-            alla11 += 1
-        if float(i) >= 11 and float(i)<12:
-            alla12 += 1
-        if float(i) >= 12:
-            yle12 += 1
+        if float(i) > 0 and float(i)<(ruutmeetrihinnamax/12):
+            ruutmeetrihind_i_vahemik += 1
+        if float(i) >= (ruutmeetrihinnamax/12) and float(i)<((ruutmeetrihinnamax/12)*2):
+            ruutmeetrihind_ii_vahemik += 1
+        if float(i) >= ((ruutmeetrihinnamax/12)*2) and float(i)<((ruutmeetrihinnamax/12)*3):
+            ruutmeetrihind_iii_vahemik += 1
+        if float(i) >= ((ruutmeetrihinnamax/12)*3) and float(i)<((ruutmeetrihinnamax/12)*4):
+            ruutmeetrihind_iv_vahemik += 1
+        if float(i) >= ((ruutmeetrihinnamax/12)*4) and float(i)<((ruutmeetrihinnamax/12)*5):
+            ruutmeetrihind_v_vahemik += 1
+        if float(i) >= ((ruutmeetrihinnamax/12)*5) and float(i)<((ruutmeetrihinnamax/12)*6):
+            ruutmeetrihind_vi_vahemik += 1
+        if float(i) >= ((ruutmeetrihinnamax/12)*6) and float(i)<((ruutmeetrihinnamax/12)*7):
+            ruutmeetrihind_vii_vahemik += 1
+        if float(i) >= ((ruutmeetrihinnamax/12)*7) and float(i)<((ruutmeetrihinnamax/12)*8):
+            ruutmeetrihind_viii_vahemik += 1
+        if float(i) >= ((ruutmeetrihinnamax/12)*8):
+            ruutmeetrihind_iix_vahemik += 1
 
-alla200 = 0
-alla300 = 0
-alla400 = 0
-alla500 = 0
-alla600 = 0
-alla700 = 0
-yle700 = 0
+hind_i_vahemik = 0
+hind_ii_vahemik = 0
+hind_iii_vahemik = 0
+hind_iv_vahemik = 0
+hind_v_vahemik = 0
+hind_vi_vahemik = 0
+hind_vii_vahemik = 0
+for i in range(len(hind)):
+    hind[i] = float(hind[i])
+hinnamax = max(hind)
+print(hinnamax)
 hind_kokku = 0
 hinnaga_kvsid = 0
+print(hind)
 for i in hind:
     if i != "":
         hind_kokku += float(i)
         hinnaga_kvsid += 1
-        if float(i) < 200:
-            alla200 += 1
-        if float(i) >= 200 and float(i) < 300:
-            alla300 += 1
-        if float(i) >= 300 and float(i) < 400:
-            alla400 += 1
-        if float(i) >= 400 and float(i) < 500:
-            alla500 += 1
-        if float(i) >= 500 and float(i) <600:
-            alla600 += 1
-        if float(i) >= 600 and float(i) < 700:
-            alla700 += 1
-        if float(i) >= 700:
-            yle700 += 1
+        if float(i) < (hinnamax/7):
+            hind_i_vahemik += 1
+        if float(i) >= (hinnamax/7) and float(i) < ((hinnamax/7)*2):
+            hind_ii_vahemik += 1
+        if float(i) >= ((hinnamax/7)*2) and float(i) < ((hinnamax/7)*3):
+            hind_iii_vahemik += 1
+        if float(i) >= ((hinnamax/7)*3) and float(i) < ((hinnamax/7)*4):
+            hind_iv_vahemik += 1
+        if float(i) >= ((hinnamax/7)*4) and float(i) <((hinnamax/7)*5):
+            hind_v_vahemik += 1
+        if float(i) >= ((hinnamax/7)*5) and float(i) < ((hinnamax/7)*6):
+            hind_vi_vahemik += 1
+        if float(i) >= ((hinnamax/7)*6):
+            hind_vii_vahemik += 1
 
 
 print("Keskmised:")
@@ -157,24 +201,24 @@ print("\t\tKv pakkumisi pindalaga >=70 ja <80 m²: " + str(alla80))
 print("\t\tKv pakkumisi pindalaga >=80 m²: " + str(pindalaga_kvsid-(alla20+alla30+alla40+alla50+alla60+alla70+alla80)))
 
 print("\tRuutmeetri hinna alusel: ")
-print("\t\tKv pakkumisi ruutmeetri hinnaga < 5 €/m²: " + str(alla5))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 5 ja <6 €/m²: " + str(alla6))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 6 ja <7 €/m²: " + str(alla7))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 7 ja <8 €/m²: " + str(alla8))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 8 ja <9 €/m²: " + str(alla9))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 9 ja <10 €/m²: " + str(alla10))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 10 ja <11 €/m²: " + str(alla11))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 11 ja <12 €/m²: " + str(alla12))
-print("\t\tKv pakkumisi ruutmeetri hinnaga >= 12 €/m²: " + str(yle12))
+print("\t\tKv pakkumisi ruutmeetri hinnaga <"+ str(round((ruutmeetrihinnamax/12),2)) + "€/m²: " + str(ruutmeetrihind_i_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >=" + str(round((ruutmeetrihinnamax/12),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*2),2)) +"€/m²: " + str(ruutmeetrihind_ii_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >=" + str(round(((ruutmeetrihinnamax/12)*2),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*3),2)) +"€/m²: " + str(ruutmeetrihind_iii_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >=" + str(round(((ruutmeetrihinnamax/12)*3),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*4),2)) +"€/m²: " + str(ruutmeetrihind_iv_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >=" + str(round(((ruutmeetrihinnamax/12)*4),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*5),2)) +"€/m²: " + str(ruutmeetrihind_v_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >=" + str(round(((ruutmeetrihinnamax/12)*5),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*6),2)) +"€/m²: " + str(ruutmeetrihind_vi_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >=" + str(round(((ruutmeetrihinnamax/12)*6),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*7),2)) +"€/m²: " + str(ruutmeetrihind_vii_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >=" + str(round(((ruutmeetrihinnamax/12)*7),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*8),2)) +"€/m²: " + str(ruutmeetrihind_viii_vahemik))
+print("\t\tKv pakkumisi ruutmeetri hinnaga >="+str(round(((ruutmeetrihinnamax/12)*8),2)) + "€/m²: " + str(ruutmeetrihind_iix_vahemik))
 
 print("\tHinna alusel: ")
-print("\t\tKv pakkumisi hinnaga < 200 €: " + str(alla200))
-print("\t\tKv pakkumisi hinnaga >=200 ja <300 €: " + str(alla300))
-print("\t\tKv pakkumisi hinnaga >=300 ja <400 €: " + str(alla400))
-print("\t\tKv pakkumisi hinnaga >=400 ja <500 €: " + str(alla500))
-print("\t\tKv pakkumisi hinnaga >=500 ja <600 €: " + str(alla600))
-print("\t\tKv pakkumisi hinnaga >=600 ja <700 €: " + str(alla700))
-print("\t\tKv pakkumisi hinnaga >=700 €: " + str(yle700))
+print("\t\tKv pakkumisi hinnaga <"+str(round((hinnamax/7),2))   + " €: " + str(hind_i_vahemik))
+print("\t\tKv pakkumisi hinnaga >="+str(round((hinnamax/7),2))   +" ja <"+str(round(((hinnamax/7)*2),2)) +" €: " + str(hind_ii_vahemik))
+print("\t\tKv pakkumisi hinnaga >="+str(round(((hinnamax/7)*2),2))   +" ja <"+str(round(((hinnamax/7)*3),2)) +" €: " + str(hind_iii_vahemik))
+print("\t\tKv pakkumisi hinnaga >="+str(round(((hinnamax/7)*3),2))   +" ja <"+str(round(((hinnamax/7)*4),2)) +" €: " + str(hind_iv_vahemik))
+print("\t\tKv pakkumisi hinnaga >="+str(round(((hinnamax/7)*4),2))   +" ja <"+str(round(((hinnamax/7)*5),2)) +" €: " + str(hind_v_vahemik))
+print("\t\tKv pakkumisi hinnaga >="+str(round(((hinnamax/7)*5),2))   +" ja <"+str(round(((hinnamax/7)*6),2)) +" €: " + str(hind_vi_vahemik))
+print("\t\tKv pakkumisi hinnaga >="+str(round(((hinnamax/7)*6),2)) + " €: " + str(hind_vii_vahemik))
 
 # impordi tk vidinad ja konstandid
 from tkinter import *
@@ -187,55 +231,55 @@ def arvuta():
     frame2=ttk.Frame(raam)
     frame2.place(x=1,y=480,height=300, width=450)
     if soovitudgraafik.get() == "hind":
-        sektor_alla200 = tahvel.create_arc(225,225,10,10,fill="red", extent = (alla200/hinnaga_kvsid)*360)
-        sektor_alla300 = tahvel.create_arc(225,225,10,10,fill = "green", start = (alla200/hinnaga_kvsid)*360, extent = (alla300/hinnaga_kvsid)*360)
-        sektor_alla400 = tahvel.create_arc(225,225,10,10,fill="blue", start = ((alla200+alla300)/hinnaga_kvsid)*360, extent = (alla400/hinnaga_kvsid)*360)
-        sektor_alla500 = tahvel.create_arc(225,225,10,10,fill="grey", start = ((alla200+alla300+alla400)/hinnaga_kvsid)*360, extent = (alla500/hinnaga_kvsid)*360)
-        sektor_alla600 = tahvel.create_arc(225,225,10,10,fill="brown", start = ((alla200+alla300+alla400+alla500)/hinnaga_kvsid)*360, extent = (alla600/hinnaga_kvsid)*360)
-        sektor_alla700 = tahvel.create_arc(225,225,10,10,fill="black", start = ((alla200+alla300+alla400+alla500+alla600)/hinnaga_kvsid)*360, extent = (alla700/hinnaga_kvsid)*360)
-        sektor_yle700 = tahvel.create_arc(225,225,10,10,fill="pink", start = ((alla200+alla300+alla400+alla500+alla600+alla700)/hinnaga_kvsid)*360, extent = (yle700/hinnaga_kvsid)*360)
-        labelalla200 = ttk.Label(raam, text="Kv pakkumisi hinnaga < 200 €: " + str(alla200), font=("Helvetica",15), foreground="red")
-        labelalla200.place(x=10, y=480)
-        labelalla300 = ttk.Label(raam, text="Kv pakkumisi hinnaga >=200 ja <300 €: " + str(alla300), font=("Helvetica",15), foreground="green")
-        labelalla300.place(x=10, y=500)
-        labelalla400 = ttk.Label(raam, text="Kv pakkumisi hinnaga >=300 ja <400 €: " + str(alla400), font=("Helvetica",15), foreground="blue")
-        labelalla400.place(x=10, y=520)
-        labelalla500 = ttk.Label(raam, text="Kv pakkumisi hinnaga >=400 ja <500 €: " + str(alla500), font=("Helvetica",15), foreground="grey")
-        labelalla500.place(x=10, y=540)
-        labelalla600 = ttk.Label(raam, text="Kv pakkumisi hinnaga >=500 ja <600 €: " + str(alla600), font=("Helvetica",15), foreground="brown")
-        labelalla600.place(x=10, y=560)
-        labelalla700 = ttk.Label(raam, text="Kv pakkumisi hinnaga >=600 ja <700 €: " + str(alla700), font=("Helvetica",15), foreground="black")
-        labelalla700.place(x=10, y=580)
-        labelyle700 = ttk.Label(raam, text="Kv pakkumisi hinnaga >=700: " + str(yle700), font=("Helvetica",15), foreground="pink")
-        labelyle700.place(x=10, y=600)
+        sektor_hind_i_vahemik = tahvel.create_arc(225,225,10,10,fill="red", extent = (hind_i_vahemik/hinnaga_kvsid)*360)
+        sektor_hind_ii_vahemik = tahvel.create_arc(225,225,10,10,fill = "green", start = (hind_i_vahemik/hinnaga_kvsid)*360, extent = (hind_ii_vahemik/hinnaga_kvsid)*360)
+        sektor_hind_iii_vahemik = tahvel.create_arc(225,225,10,10,fill="blue", start = ((hind_i_vahemik+hind_ii_vahemik)/hinnaga_kvsid)*360, extent = (hind_iii_vahemik/hinnaga_kvsid)*360)
+        sektor_hind_iv_vahemik = tahvel.create_arc(225,225,10,10,fill="grey", start = ((hind_i_vahemik+hind_ii_vahemik+hind_iii_vahemik)/hinnaga_kvsid)*360, extent = (hind_iv_vahemik/hinnaga_kvsid)*360)
+        sektor_hind_v_vahemik = tahvel.create_arc(225,225,10,10,fill="brown", start = ((hind_i_vahemik+hind_ii_vahemik+hind_iii_vahemik+hind_iv_vahemik)/hinnaga_kvsid)*360, extent = (hind_v_vahemik/hinnaga_kvsid)*360)
+        sektor_hind_vi_vahemik = tahvel.create_arc(225,225,10,10,fill="black", start = ((hind_i_vahemik+hind_ii_vahemik+hind_iii_vahemik+hind_iv_vahemik+hind_v_vahemik)/hinnaga_kvsid)*360, extent = (hind_vi_vahemik/hinnaga_kvsid)*360)
+        sektor_hind_vii_vahemik = tahvel.create_arc(225,225,10,10,fill="pink", start = ((hind_i_vahemik+hind_ii_vahemik+hind_iii_vahemik+hind_iv_vahemik+hind_v_vahemik+hind_vi_vahemik)/hinnaga_kvsid)*360, extent = (hind_vii_vahemik/hinnaga_kvsid)*360)
+        label_hind_i_vahemik = ttk.Label(raam, text="Kv pakkumisi hinnaga <" +str(round((hinnamax/7),2))   +" €: " + str(hind_i_vahemik), font=("Helvetica",15), foreground="red")
+        label_hind_i_vahemik.place(x=10, y=480)
+        label_hind_ii_vahemik = ttk.Label(raam, text="Kv pakkumisi hinnaga >="+str(round((hinnamax/7),2)) +" ja <"+str(round(((hinnamax/7)*2),2))+" €: " + str(hind_ii_vahemik), font=("Helvetica",15), foreground="green")
+        label_hind_ii_vahemik.place(x=10, y=500)
+        label_hind_iii_vahemik = ttk.Label(raam, text="Kv pakkumisi hinnaga >=" +str(round(((hinnamax/7)*2),2))+" ja <"+str(round(((hinnamax/7)*3),2)) +" €: " + str(hind_iii_vahemik), font=("Helvetica",15), foreground="blue")
+        label_hind_iii_vahemik.place(x=10, y=520)
+        label_hind_iv_vahemik = ttk.Label(raam, text="Kv pakkumisi hinnaga >=" +str(round(((hinnamax/7)*3),2))+" ja <"+str(round(((hinnamax/7)*4),2)) +" €: " + str(hind_iv_vahemik), font=("Helvetica",15), foreground="grey")
+        label_hind_iv_vahemik.place(x=10, y=540)
+        label_hind_v_vahemik = ttk.Label(raam, text="Kv pakkumisi hinnaga >=" +str(round(((hinnamax/7)*4),2))+" ja <"+str(round(((hinnamax/7)*5),2)) +" €: " + str(hind_v_vahemik), font=("Helvetica",15), foreground="brown")
+        label_hind_v_vahemik.place(x=10, y=560)
+        label_hind_vi_vahemik = ttk.Label(raam, text="Kv pakkumisi hinnaga >=" +str(round(((hinnamax/7)*5),2))+" ja <"+str(round(((hinnamax/7)*6),2)) +" €: "+ str(hind_vi_vahemik), font=("Helvetica",15), foreground="black")
+        label_hind_vi_vahemik.place(x=10, y=580)
+        label_hind_vii_vahemik = ttk.Label(raam, text="Kv pakkumisi hinnaga >="+str(round(((hinnamax/7)*6),2)) +" €: " + str(hind_vii_vahemik), font=("Helvetica",15), foreground="pink")
+        label_hind_vii_vahemik.place(x=10, y=600)
     if soovitudgraafik.get() == "ruutmeetrihind":
-        sektor_alla5 = tahvel.create_arc(225,225,10,10,fill="red", extent = (alla5/ruutmeetrihinnaga_kvsid)*360)
-        sektor_alla6 = tahvel.create_arc(225,225,10,10,fill = "green", start = (alla5/ruutmeetrihinnaga_kvsid)*360, extent = (alla6/ruutmeetrihinnaga_kvsid)*360)
-        sektor_alla7 = tahvel.create_arc(225,225,10,10,fill="blue", start = ((alla5+alla6)/ruutmeetrihinnaga_kvsid)*360, extent = (alla7/ruutmeetrihinnaga_kvsid)*360)
-        sektor_alla8 = tahvel.create_arc(225,225,10,10,fill="grey", start = ((alla5+alla6+alla7)/ruutmeetrihinnaga_kvsid)*360, extent = (alla8/ruutmeetrihinnaga_kvsid)*360)
-        sektor_alla9 = tahvel.create_arc(225,225,10,10,fill="brown", start = ((alla5+alla6+alla7+alla8)/ruutmeetrihinnaga_kvsid)*360, extent = (alla9/ruutmeetrihinnaga_kvsid)*360)
-        sektor_alla10 = tahvel.create_arc(225,225,10,10,fill="black", start = ((alla5+alla6+alla7+alla8+alla9)/ruutmeetrihinnaga_kvsid)*360, extent = (alla10/ruutmeetrihinnaga_kvsid)*360)
-        sektor_alla11 = tahvel.create_arc(225,225,10,10,fill="pink", start = ((alla5+alla6+alla7+alla8+alla9+alla10)/ruutmeetrihinnaga_kvsid)*360, extent = (alla11/ruutmeetrihinnaga_kvsid)*360)
-        sektor_alla12 = tahvel.create_arc(225,225,10,10,fill="magenta", start = ((alla5+alla6+alla7+alla8+alla9+alla10+alla11)/ruutmeetrihinnaga_kvsid)*360, extent = (alla12/ruutmeetrihinnaga_kvsid)*360)
-        sektor_yle12 = tahvel.create_arc(225,225,10,10,fill="aliceblue", start = ((alla5+alla6+alla7+alla8+alla9+alla10+alla11+alla12)/ruutmeetrihinnaga_kvsid)*360, extent = ((yle12)/ruutmeetrihinnaga_kvsid)*360)
-        labelalla5 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga < 5 €/m²: " + str(alla5), font=("Helvetica",15), foreground="red")
-        labelalla5.place(x=10, y=480)
-        labelalla6 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 5 ja <6 €/m²: " + str(alla6), font=("Helvetica",15), foreground="green")
-        labelalla6.place(x=10, y=500)
-        labelalla7 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 6 ja <7 €/m²: " + str(alla7), font=("Helvetica",15), foreground="blue")
-        labelalla7.place(x=10, y=520)
-        labelalla8 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 7 ja <8 €/m²: " + str(alla8), font=("Helvetica",15), foreground="grey")
-        labelalla8.place(x=10, y=540)
-        labelalla9 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 8 ja <9 €/m²: " + str(alla9), font=("Helvetica",15), foreground="brown")
-        labelalla9.place(x=10, y=560)
-        labelalla10 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 9 ja <10 €/m²: " + str(alla10), font=("Helvetica",15), foreground="black")
-        labelalla10.place(x=10, y=580)
-        labelalla11 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 10 ja <11 €/m²: " + str(alla11), font=("Helvetica",15), foreground="pink")
-        labelalla11.place(x=10, y=600)
-        labelalla12 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 11 ja <12 €/m²: " + str(alla12), font=("Helvetica",15), foreground="magenta")
-        labelalla12.place(x=10, y=620)
-        labelyle12 = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >= 12 €/m²: " + str(yle12), font=("Helvetica",15), foreground="aliceblue")
-        labelyle12.place(x=10, y=640)
+        sektor_ruutmeetrihind_i_vahemik = tahvel.create_arc(225,225,10,10,fill="red", extent = (ruutmeetrihind_i_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_ii_vahemik = tahvel.create_arc(225,225,10,10,fill = "green", start = (ruutmeetrihind_i_vahemik/ruutmeetrihinnaga_kvsid)*360, extent = (ruutmeetrihind_ii_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_iii_vahemik = tahvel.create_arc(225,225,10,10,fill="blue", start = ((ruutmeetrihind_i_vahemik+ruutmeetrihind_ii_vahemik)/ruutmeetrihinnaga_kvsid)*360, extent = (ruutmeetrihind_iii_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_iv_vahemik = tahvel.create_arc(225,225,10,10,fill="grey", start = ((ruutmeetrihind_i_vahemik+ruutmeetrihind_ii_vahemik+ruutmeetrihind_iii_vahemik)/ruutmeetrihinnaga_kvsid)*360, extent = (ruutmeetrihind_iv_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_v_vahemik = tahvel.create_arc(225,225,10,10,fill="brown", start = ((ruutmeetrihind_i_vahemik+ruutmeetrihind_ii_vahemik+ruutmeetrihind_iii_vahemik+ruutmeetrihind_iv_vahemik)/ruutmeetrihinnaga_kvsid)*360, extent = (ruutmeetrihind_v_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_vi_vahemik = tahvel.create_arc(225,225,10,10,fill="black", start = ((ruutmeetrihind_i_vahemik+ruutmeetrihind_ii_vahemik+ruutmeetrihind_iii_vahemik+ruutmeetrihind_iv_vahemik+ruutmeetrihind_v_vahemik)/ruutmeetrihinnaga_kvsid)*360, extent = (ruutmeetrihind_vi_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_vii_vahemik = tahvel.create_arc(225,225,10,10,fill="pink", start = ((ruutmeetrihind_i_vahemik+ruutmeetrihind_ii_vahemik+ruutmeetrihind_iii_vahemik+ruutmeetrihind_iv_vahemik+ruutmeetrihind_v_vahemik+ruutmeetrihind_vi_vahemik)/ruutmeetrihinnaga_kvsid)*360, extent = (ruutmeetrihind_vii_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_viii_vahemik = tahvel.create_arc(225,225,10,10,fill="magenta", start = ((ruutmeetrihind_i_vahemik+ruutmeetrihind_ii_vahemik+ruutmeetrihind_iii_vahemik+ruutmeetrihind_iv_vahemik+ruutmeetrihind_v_vahemik+ruutmeetrihind_vi_vahemik+ruutmeetrihind_vii_vahemik)/ruutmeetrihinnaga_kvsid)*360, extent = (ruutmeetrihind_viii_vahemik/ruutmeetrihinnaga_kvsid)*360)
+        sektor_ruutmeetrihind_iix_vahemik = tahvel.create_arc(225,225,10,10,fill="aliceblue", start = ((ruutmeetrihind_i_vahemik+ruutmeetrihind_ii_vahemik+ruutmeetrihind_iii_vahemik+ruutmeetrihind_iv_vahemik+ruutmeetrihind_v_vahemik+ruutmeetrihind_vi_vahemik+ruutmeetrihind_vii_vahemik+ruutmeetrihind_viii_vahemik)/ruutmeetrihinnaga_kvsid)*360, extent = ((ruutmeetrihind_iix_vahemik)/ruutmeetrihinnaga_kvsid)*360)
+        label_ruutmeetrihind_i_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga"+str(round((ruutmeetrihinnamax/12),2))+ "€/m²: " + str(ruutmeetrihind_i_vahemik), font=("Helvetica",15), foreground="red")
+        label_ruutmeetrihind_i_vahemik.place(x=10, y=480)
+        label_ruutmeetrihind_ii_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >=" +str(round((ruutmeetrihinnamax/12),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*2),2)) +"€/m²: " + str(ruutmeetrihind_ii_vahemik), font=("Helvetica",15), foreground="green")
+        label_ruutmeetrihind_ii_vahemik.place(x=10, y=500)
+        label_ruutmeetrihind_iii_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >=" +str(round(((ruutmeetrihinnamax/12)*2),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*3),2)) +"€/m²: " + str(ruutmeetrihind_iii_vahemik), font=("Helvetica",15), foreground="blue")
+        label_ruutmeetrihind_iii_vahemik.place(x=10, y=520)
+        label_ruutmeetrihind_iv_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >=" +str(round(((ruutmeetrihinnamax/12)*3),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*4),2)) +"€/m²: " + str(ruutmeetrihind_iv_vahemik), font=("Helvetica",15), foreground="grey")
+        label_ruutmeetrihind_iv_vahemik.place(x=10, y=540)
+        label_ruutmeetrihind_v_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >=" +str(round(((ruutmeetrihinnamax/12)*4),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*5),2)) +"€/m²: " + str(ruutmeetrihind_v_vahemik), font=("Helvetica",15), foreground="brown")
+        label_ruutmeetrihind_v_vahemik.place(x=10, y=560)
+        label_ruutmeetrihind_vi_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >=" +str(round(((ruutmeetrihinnamax/12)*5),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*6),2)) +"€/m²: " + str(ruutmeetrihind_vi_vahemik), font=("Helvetica",15), foreground="black")
+        label_ruutmeetrihind_vi_vahemik.place(x=10, y=580)
+        label_ruutmeetrihind_vii_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >=" +str(round(((ruutmeetrihinnamax/12)*5),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*6),2)) +"€/m²: " + str(ruutmeetrihind_vii_vahemik), font=("Helvetica",15), foreground="pink")
+        label_ruutmeetrihind_vii_vahemik.place(x=10, y=600)
+        label_ruutmeetrihind_viii_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >=" +str(round(((ruutmeetrihinnamax/12)*6),2))+" ja "+ str(round(((ruutmeetrihinnamax/12)*7),2)) +"€/m²: " + str(ruutmeetrihind_viii_vahemik), font=("Helvetica",15), foreground="magenta")
+        label_ruutmeetrihind_viii_vahemik.place(x=10, y=620)
+        label_ruutmeetrihind_iix_vahemik = ttk.Label(raam, text="Kv pakkumisi ruutmeetri hinnaga >="+ str(round(((ruutmeetrihinnamax/12)*7),2)) +"€/m²: " + str(ruutmeetrihind_iix_vahemik), font=("Helvetica",15), foreground="aliceblue")
+        label_ruutmeetrihind_iix_vahemik.place(x=10, y=640)
     if soovitudgraafik.get() == "pindala":
         sektor_alla20 = tahvel.create_arc(225,225,10,10,fill="red", extent = (alla20/pindalaga_kvsid)*360)
         sektor_alla30 = tahvel.create_arc(225,225,10,10,fill = "green", start = (alla20/pindalaga_kvsid)*360, extent = (alla30/pindalaga_kvsid)*360)
