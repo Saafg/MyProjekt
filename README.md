@@ -47,4 +47,11 @@ Kirjutasin programmile juurde koodi, mis võimaldab "input"-i kasutades sisestad
 maksimaalne hind ning tehingu tüüp - kas müük, üür või mõlemad. Kuna kinnisvara müügi ja ostu puhul on kõikumised hinnas ning ruutmeetrihinnas suured, siis tegin nende näitajate puhul
 sektordiagrammi loomisel kasutatavad vahemikud sõltuvaks otsingutulemustes kajastuvate pakkumiste maksimaalsest hinnast ning ruutmeetrihinnast.
 
-Edasi on plaanis võimaldada sisestada otsingukriteeriumiteks ka korteri asukoht - vähemalt maakondade ning suuremate linnade (Tallinn, Tartu, Pärnu) piires.
+Kirjutasin programmile juurde koodi, mis võimaldab "input"-i kasutades sisestada otsitava kinnisvara paiknemise maakonda ning täpsustada valda või linna. Maakondadega läks lihtsalt, kuna
+maakonnad ja nele vastavad "id"-d, mida url-i sisestada olid kv.ee lähtekoodis olemas. Valdadega oli keerulisem, kuna nendega seotud infot lähtekoodis polnud. Kui aga inspekteerida
+valdade loetelu listi, siis sinna ilmus valdade info, kui maakonna listist valida ära maakond. Mõtlesin, et valdadega seotud info võiks saada kätte POST request
+meetodiga, saates serverisse andmed soovitud maakonna kohta. Edu antud meetodi õppimine mulle ei toonud ning kuna valdadega seotud infot lähtekoodi ei teki, siis mõtlesin, et võibolla
+antud meetod ei saagi mulle edu tuua ning hakkasin otsima teisi lahendusi. Sai selgeks, et süsteemi nimi on AJAX (Asynchronous JavaScript and XML) - javascript teeb päringuid lehte uuesti
+laadimata. Network tab'i jälgides sai selgeks, kuhu url-i valdadega seotud päring läheb. Antud url-l oligi sõnastik, milles oli valdadega seonduv info. Kahjuks ei olnud see sõnastik 
+päris selline, et seda oleks saanud kohe Pythoniga kasutada, vaid seda tuli enne veidi korrastada. Sellest tulenevalt ei saanud programmi sisse kirjutada tsüklit, mis kõik need url-id
+läbi käiks ning koguks kokku valdadega seonduva info, vaid kogusin valdadega seonduva info eraldi protseduurina ning copy-sin saadud listid oma programmi.  

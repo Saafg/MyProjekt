@@ -3,15 +3,57 @@ __author__ = 'erkiaun'
 import requests
 from bs4 import BeautifulSoup
 
+url = "http://www.kv.ee/?act=search.simple&company_id=&page=1&orderby=ob&page_size=100&deal_type=1&dt_select=1&county=0&parish=&price_min=&price_max=&price_type=1&rooms_min=&rooms_max=&area_min=&area_max=&floor_min=&floor_max=&keyword="
+
+r = requests.get(url)
+soup = BeautifulSoup(r.content, "html.parser")
+
+data = soup.find_all("select", attrs={"id":"county"})
+
+list_maakonna_id = []
+
+for item in data:
+    list_maakonna_nimi = (item.text).split()
+
+list_maakonna_nimi[0] = ""
+
+for item in data:
+    data2 = item.find_all("option")
+
+for item in data2:
+    list_maakonna_id.append(item.get("value"))
+
+list_valla_nimi = ["",'Aegviidu vald', 'Anija vald', 'Harku vald', 'Jõelähtme vald', 'Keila', 'Keila vald', 'Kernu vald', 'Kiili vald', 'Kose vald', 'Kuusalu vald', 'Loksa', 'Maardu', 'Nissi vald', 'Padise vald', 'Paldiski', 'Raasiku vald', 'Rae vald', 'Saku vald', 'Saue', 'Saue vald', 'Tallinn', 'Vasalemma vald', 'Viimsi vald', 'Emmaste vald', 'Hiiu vald', 'Käina vald', 'Pühalepa vald', 'Alajõe vald', 'Aseri vald', 'Avinurme vald', 'Iisaku vald', 'Illuka vald', 'Jõhvi vald', 'Kiviõli', 'Kohtla-Järve', 'Kohtla-Nõmme vald', 'Kohtla vald', 'Lohusuu vald', 'Lüganuse vald', 'Mäetaguse vald', 'Narva', 'Narva-Jõesuu', 'Sillamäe', 'Sonda vald', 'Toila vald', 'Tudulinna vald', 'Vaivara vald', 'Jõgeva', 'Jõgeva vald', 'Kasepää vald', 'Mustvee', 'Pajusi vald', 'Palamuse vald', 'Pala vald', 'Puurmani vald', 'Põltsamaa', 'Põltsamaa vald', 'Saare vald', 'Tabivere vald', 'Torma vald', 'Albu vald', 'Ambla vald', 'Imavere vald', 'Järva-Jaani vald', 'Kareda vald', 'Koeru vald', 'Koigi vald', 'Paide', 'Paide vald', 'Roosna-Alliku vald', 'Türi vald', 'Väätsa vald', 'Haapsalu', 'Hanila vald', 'Kullamaa vald', 'Lihula vald', 'Lääne-Nigula vald', 'Martna vald', 'Noarootsi vald', 'Nõva vald', 'Ridala vald', 'Vormsi vald', 'Haljala vald', 'Kadrina vald', 'Kunda', 'Laekvere vald', 'Rakke vald', 'Rakvere', 'Rakvere vald', 'Rägavere vald', 'Sõmeru vald', 'Tamsalu vald', 'Tapa vald', 'Vihula vald', 'Vinni vald', 'Viru-Nigula vald', 'Väike-Maarja vald', 'Are vald', 'Audru vald', 'Halinga vald', 'Häädemeeste vald', 'Kihnu vald', 'Koonga vald', 'Paikuse vald', 'Pärnu', 'Saarde vald', 'Sauga vald', 'Sindi', 'Surju vald', 'Tahkuranna vald', 'Tootsi vald', 'Tori vald', 'Tõstamaa vald', 'Varbla vald', 'Vändra vald', 'Vändra vald (alev)', 'Juuru vald', 'Järvakandi vald', 'Kaiu vald', 'Kehtna vald', 'Kohila alevi vald', 'Kohila vald', 'Käru vald', 'Märjamaa vald', 'Raikküla vald', 'Rapla vald', 'Vigala vald', 'Kihelkonna vald', 'Kuressaare', 'Laimjala vald', 'Leisi vald', 'Lääne-Saare vald', 'Muhu vald', 'Mustjala vald', 'Orissaare vald', 'Pihtla vald', 'Pöide vald', 'Ruhnu vald', 'Salme vald', 'Torgu vald', 'Valjala vald', 'Alatskivi vald', 'Elva', 'Haaslava vald', 'Kallaste', 'Kambja vald', 'Konguta vald', 'Laeva vald', 'Luunja vald', 'Meeksi vald', 'Mäksa vald', 'Nõo vald', 'Peipsiääre vald', 'Piirissaare vald', 'Puhja vald', 'Rannu vald', 'Rõngu vald', 'Tartu', 'Tartu vald', 'Tähtvere vald', 'Vara vald', 'Võnnu vald', 'Ülenurme vald', 'Helme vald', 'Hummuli vald', 'Karula vald', 'Otepää vald', 'Palupera vald', 'Puka vald', 'Põdrala vald', 'Sangaste vald', 'Taheva vald', 'Tõlliste vald', 'Tõrva', 'Valga', 'Õru vald', 'Abja vald', 'Halliste vald', 'Karksi vald', 'Kolga-Jaani vald', 'Kõo vald', 'Kõpu vald', 'Mõisaküla', 'Suure-Jaani vald', 'Tarvastu vald', 'Viljandi', 'Viljandi vald', 'Võhma', 'Antsla vald', 'Haanja vald', 'Lasva vald', 'Meremäe vald', 'Misso vald', 'Mõniste vald', 'Rõuge vald', 'Sõmerpalu vald', 'Urvaste vald', 'Varstu vald', 'Vastseliina vald', 'Võru', 'Võru vald']
+list_valla_id = ["0",'1', '2', '3', '4', '416', '5', '6', '7', '8', '9', '417', '418', '12', '13', '419', '14', '15', '16', '420', '17', '421', '18', '19', '20', '614', '22', '23', '24', '25', '26', '27', '28', '29', '424', '425', '31', '30', '32', '33', '35', '426', '427', '429', '36', '37', '38', '39', '430', '40', '46', '431', '41', '43', '42', '44', '432', '45', '47', '48', '49', '50', '51', '52', '53', '55', '56', '57', '433', '60', '61', '62', '63', '435', '64', '65', '66', '615', '67', '68', '69', '71', '74', '76', '77', '437', '78', '79', '438', '80', '81', '83', '84', '608', '85', '86', '87', '89', '103', '104', '105', '106', '108', '109', '111', '444', '112', '113', '445', '114', '115', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '128', '127', '129', '131', '133', '134', '135', '137', '447', '140', '141', '618', '143', '144', '145', '146', '147', '148', '149', '150', '151', '152', '448', '153', '449', '154', '155', '156', '157', '158', '159', '160', '161', '162', '163', '164', '165', '450', '166', '167', '168', '169', '170', '171', '172', '173', '177', '174', '175', '176', '178', '179', '180', '452', '453', '181', '182', '183', '184', '185', '186', '187', '455', '192', '193', '457', '616', '458', '196', '197', '198', '199', '200', '201', '202', '203', '204', '205', '206', '460', '207']
+
+maakond = input("Sisesta maakond otsitava kv jaoks (kui ei soovi täpsustada, vajuta Enter): ")
+while maakond not in list_maakonna_nimi:
+    maakond = input("Proovi sisestada maakonna nimi uuesti (kujul Harjumaa, Ida-Virumaa, Jõgevamaa, Järvamaa, Läänemaa, Lääne-Virumaa, Põlvamaa, Pärnumaa või Raplamaa): ")
+
+vald = input("Sisesta vald või suurem asula (nt linn) otsitava kv jaoks (kui ei soovi täpsustada, vajuta Enter): ")
+while vald not in list_valla_nimi:
+    vald = input("Vabandust, kuid sellise kirjapiliga vald või asula puudub listist. Proovi uuesti või kui ei soovi täpsustada, vajuta Enter!): ")
+
+
+kv_tyyp = input("Sisesta otsitava kinnisvara tüüp (korter, maja, majaosad, äripinnad)")
 tehing =  input("Sisesta huvipakkuva tehingu tüüp(müük, üür või kõik): ")
 while tehing != "müük" and tehing != "üür" and tehing != "kõik":
-    tehing =  input("Sisesta palun korrektine tehingu tüüp(müük, üür või kõik): ")
-if tehing == "üür":
-    tehing = "2"
+    tehing =  input("Sisesta palun korrektselt tehingu tüüp(müük, üür või kõik): ")
 if tehing == "müük":
-    tehing = "1"
+    if kv_tyyp == "korter":
+        tehing = "1"
+    if kv_tyyp == "maja":
+        tehing = "3"
+if tehing == "üür":
+    if kv_tyyp == "korter":
+        tehing = "2"
+    if kv_tyyp == "maja":
+        tehing = "4"
 if tehing == "kõik":
-    tehing = "20"
+    if kv_tyyp == "korter":
+        tehing = "20"
+    if kv_tyyp == "maja":
+        tehing = "21"
 
 toad_min = input("Sisesta minimaalne tubade arv (kui ei soovi täpsustada, vajuta Enter): ")
 while toad_min != "" and toad_min.isnumeric() == False:
@@ -29,18 +71,20 @@ hind_max = input("Sisesta maksimaalne hind (kui ei soovi täpsustada, vajuta Ent
 while hind_max != "" and hind_max.isnumeric() == False:
     hind_max = input("Sisesta palun korrektselt maksimaalne hind (kui ei soovi täpsustada, vajuta Enter): ")
 
-url = "http://www.kv.ee/?act=search.simple&company_id=&page=1&orderby=ob&page_size=100&deal_type=2&dt_select=2&county=1&parish=&price_min=&price_max=&price_type=1&rooms_min=&rooms_max=&area_min=&area_max=&floor_min=&floor_max=&keyword="
+url = url.replace(url[url.find("county="):url.find("&parish=")],"county="+list_maakonna_id[list_maakonna_nimi.index(maakond)])
+url = url.replace(url[url.find("parish="):url.find("&price_min=")],"parish="+list_valla_id[list_valla_nimi.index(vald)])
 url = url.replace(url[url.find("deal_type"):url.find("deal_type")+23],"deal_type="+tehing+"&dt_select="+tehing)
 url = url.replace("rooms_min=","rooms_min="+toad_min)
 url = url.replace("rooms_max=","rooms_max="+toad_max)
 url = url.replace("price_max=","price_max="+hind_max)
 url = url.replace("price_min=","price_min="+hind_min)
-print(url)
+
 r = requests.get(url)
-
 soup = BeautifulSoup(r.content, "html.parser")
-
-data = soup.find_all("tr", attrs={"class":"object-type-apartment", "id":True})
+if kv_tyyp == "korter":
+    data = soup.find_all("tr", attrs={"class":"object-type-apartment", "id":True})
+else:
+    data = soup.find_all("tr", attrs={"class":"object-type-house", "id":True})
 
 toad = []
 ruutmeetreid = []
@@ -49,6 +93,7 @@ hind = []
 piirkond = []
 
 for item in data:
+        print()
         print(item.contents[3].find_all("h2")[0].text.strip())
         print("Tube: " + item.contents[5].text)
         toad.append(item.contents[5].text)
@@ -63,7 +108,6 @@ for item in data:
         x=x.replace(u"\xa0","")
         hind.append(x)
         print()
-
 
 
 tubasid_kokku = 0
@@ -112,35 +156,35 @@ ruutmeetrihind_vi_vahemik = 0
 ruutmeetrihind_vii_vahemik = 0
 ruutmeetrihind_viii_vahemik = 0
 ruutmeetrihind_iix_vahemik = 0
+ruutmeetrihinnamax = 0
 for i in range(len(ruutmeetrihind)):
-    ruutmeetrihind[i] = float(ruutmeetrihind[i])
-print(ruutmeetrihind)
-ruutmeetrihinnamax = max(ruutmeetrihind)
-print(ruutmeetrihinnamax)
+    if ruutmeetrihind[i] != "":
+        ruutmeetrihind[i] = float(ruutmeetrihind[i])
+        if ruutmeetrihind[i] > ruutmeetrihinnamax:
+            ruutmeetrihinnamax = ruutmeetrihind[i]
 ruutmeetrihind_kokku = 0
 ruutmeetrihinnaga_kvsid = 0
 for i in ruutmeetrihind:
-    if i != "0":
+    if i != 0 and i != "":
         ruutmeetrihind_kokku += float(i)
         ruutmeetrihinnaga_kvsid += 1
-        if float(i) > 0 and float(i)<(ruutmeetrihinnamax/12):
+        if float(i) > 0 and float(i)<(ruutmeetrihinnamax/8):
             ruutmeetrihind_i_vahemik += 1
-        if float(i) >= (ruutmeetrihinnamax/12) and float(i)<((ruutmeetrihinnamax/12)*2):
+        if float(i) >= (ruutmeetrihinnamax/8) and float(i)<((ruutmeetrihinnamax/8)*2):
             ruutmeetrihind_ii_vahemik += 1
-        if float(i) >= ((ruutmeetrihinnamax/12)*2) and float(i)<((ruutmeetrihinnamax/12)*3):
+        if float(i) >= ((ruutmeetrihinnamax/8)*2) and float(i)<((ruutmeetrihinnamax/8)*3):
             ruutmeetrihind_iii_vahemik += 1
-        if float(i) >= ((ruutmeetrihinnamax/12)*3) and float(i)<((ruutmeetrihinnamax/12)*4):
+        if float(i) >= ((ruutmeetrihinnamax/8)*3) and float(i)<((ruutmeetrihinnamax/8)*4):
             ruutmeetrihind_iv_vahemik += 1
-        if float(i) >= ((ruutmeetrihinnamax/12)*4) and float(i)<((ruutmeetrihinnamax/12)*5):
+        if float(i) >= ((ruutmeetrihinnamax/8)*4) and float(i)<((ruutmeetrihinnamax/8)*5):
             ruutmeetrihind_v_vahemik += 1
-        if float(i) >= ((ruutmeetrihinnamax/12)*5) and float(i)<((ruutmeetrihinnamax/12)*6):
+        if float(i) >= ((ruutmeetrihinnamax/8)*5) and float(i)<((ruutmeetrihinnamax/8)*6):
             ruutmeetrihind_vi_vahemik += 1
-        if float(i) >= ((ruutmeetrihinnamax/12)*6) and float(i)<((ruutmeetrihinnamax/12)*7):
+        if float(i) >= ((ruutmeetrihinnamax/8)*6) and float(i)<((ruutmeetrihinnamax/8)*7):
             ruutmeetrihind_vii_vahemik += 1
-        if float(i) >= ((ruutmeetrihinnamax/12)*7) and float(i)<((ruutmeetrihinnamax/12)*8):
-            ruutmeetrihind_viii_vahemik += 1
-        if float(i) >= ((ruutmeetrihinnamax/12)*8):
+        if float(i) >= ((ruutmeetrihinnamax/8)*7):
             ruutmeetrihind_iix_vahemik += 1
+
 
 hind_i_vahemik = 0
 hind_ii_vahemik = 0
@@ -152,10 +196,8 @@ hind_vii_vahemik = 0
 for i in range(len(hind)):
     hind[i] = float(hind[i])
 hinnamax = max(hind)
-print(hinnamax)
 hind_kokku = 0
 hinnaga_kvsid = 0
-print(hind)
 for i in hind:
     if i != "":
         hind_kokku += float(i)
