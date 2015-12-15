@@ -55,3 +55,8 @@ antud meetod ei saagi mulle edu tuua ning hakkasin otsima teisi lahendusi. Sai s
 laadimata. Network tab'i jälgides sai selgeks, kuhu url-i valdadega seotud päring läheb. Antud url-l oligi sõnastik, milles oli valdadega seonduv info. Kahjuks ei olnud see sõnastik 
 päris selline, et seda oleks saanud kohe Pythoniga kasutada, vaid seda tuli enne veidi korrastada. Sellest tulenevalt ei saanud programmi sisse kirjutada tsüklit, mis kõik need url-id
 läbi käiks ning koguks kokku valdadega seonduva info, vaid kogusin valdadega seonduva info eraldi protseduurina ning copy-sin saadud listid oma programmi.  
+
+Korrastasin koodi. Kirjutasin koodijuppidele juurde kommentaarid. Samuti kõrvaldasin trükivigu ning ette tulevaid erroreid. Näiteks ei teinud programm varem tulpdiagrammi, kui otsingule
+tuli vaid üks vaste. Samuti tuli error, kui otsingule ei tulnud ühtegi vastet - selleks puhuks ma tegin nüüd "raise Exception"-i koos asjakohase vea selgitusega. 
+
+Projekt on valmis!
