@@ -60,3 +60,6 @@ Korrastasin koodi. Kirjutasin koodijuppidele juurde kommentaarid. Samuti kõrval
 tuli vaid üks vaste. Samuti tuli error, kui otsingule ei tulnud ühtegi vastet - selleks puhuks ma tegin nüüd "raise Exception"-i koos asjakohase vea selgitusega. 
 
 Projekt on valmis!
+
+
+https://colab.research.google.com/drive/1_ZAc1IbyL7ty-pV6M0BAXfMYtOLxobT0#scrollTo=kpp2kQF4BO5T
